@@ -1,5 +1,6 @@
 package in.mk.service;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import in.mk.binding.Contact;
 import in.mk.repo.ContactRepo;
@@ -20,8 +21,28 @@ public class ContactService {
     public List<Contact> getAllContacts() {
         return repository.findAll();
     }
+ @Transactional
     public Contact createContact(Contact contact) {
-        return repository.save(contact);
+
+            Contact existing = repository.findById(contact.getContactId()).orElse(null);
+        if (existing == null) {
+
+                Contact obj = new Contact();
+
+                obj.setContactName(contact.getContactName());
+                obj.setContactEmail(contact.getContactEmail());
+                obj.setContactPhone(contact.getContactPhone());
+                return repository.save(obj);
+
+        }else {
+
+                existing.setContactName(contact.getContactName());
+                existing.setContactEmail(contact.getContactEmail());
+                existing.setContactPhone(contact.getContactPhone());
+
+                return repository.save(existing);
+       }
+
     }
     public Contact updateContact(Integer id, Contact contact) {
         Contact existing = repository.findById(id).orElse(null);
