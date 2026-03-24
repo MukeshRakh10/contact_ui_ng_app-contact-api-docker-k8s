@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name="contact_table")
@@ -16,8 +17,9 @@ public class Contact {
 	private String contactName;
 	private String contactEmail;
 	private Long contactPhone;
-	
-	
+	@Version
+	private Integer version;
+
 	public Integer getContactId() {
 		return contactId;
 	}
